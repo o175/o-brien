@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+      "lib": ["dom", "es2017", "es2015"]
+  },
+  "parcel-plugin-typescript": {
+    "transpileOnly": false
+  }
+}
