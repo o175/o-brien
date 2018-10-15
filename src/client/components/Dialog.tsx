@@ -11,24 +11,51 @@ const StyledDialog = styled.dialog`
     position: fixed;
     top: 20%;
 `
-let name = '';
-const Dialog = (props: any) =>
-    props.state.editingCard !== null ?
-        <StyledDialog open id="favDialog">
+class Dialog extends React.Component<any, { name: string }> {
+    state = { name: '' }
+    componentDidMount() {
+        this.setState({
+            name: this.props.state.assignments[this.props.state.editingCard]
+        });
+        if (this.textInput) {
+            console.log(this.textInput)
+            this.textInput.focus();
+        }
+    }
+    textInput: any;
 
+    setTextInputRef = (element: any) => this.textInput = element;
+    inputRef = React.createRef();
+    onChange = (event: any) => this.setState({ name: event.target.value });
+    onSave = () => this.props.actions.editCard(this.state.name);
+
+    render() {
+        return <StyledDialog open id="favDialog">
             <h3>Enter new name</h3>
-            <Input onChange={(event) => name = event.target.value} />
+            <Input
+                innerRef={this.setTextInputRef}
+                onChange={this.onChange}
+                value={this.state.name}
+            />
             <Row>
-                <Button onClick={() => props.actions.editCard(name)} >
+                <Button onClick={this.onSave} >
                     Save
                 </Button>
-                <Button onClick={props.actions.clearCard}>Remove</Button>
-                <Button onClick={props.actions.closeEditor}>Close</Button>
+                <Button onClick={this.props.actions.clearCard}>
+                    Remove
+                </Button>
+                <Button onClick={this.props.actions.closeEditor}>
+                    Close
+                </Button>
             </Row>
-        </StyledDialog > :
-        null
+        </StyledDialog >
+    }
+}
 
+const DialogWrapper = (props: any) => props.state.editingCard !== null ? <Dialog
+    {...props}
+/> : null
 export default connect(
     (state: TState) => ({ state }),
     (dispatch: Dispatch) => ({ actions: bindActionCreators({ closeEditor, clearCard, editCard }, dispatch) })
-)(Dialog);
+)(DialogWrapper);

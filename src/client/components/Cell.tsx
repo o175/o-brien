@@ -10,7 +10,6 @@ const CellPrimitive = styled.div`
     cursor: pointer;
 `;
 
-
 const CellText = styled.div`
 margin-left: auto;
 margin-right: auto;
@@ -33,7 +32,6 @@ const Cell = (props: {
         </CellText>
     </Front>
     <Back>
-        <div>{props.name}</div>
         <div>{props.name}</div>
     </Back>
 </FlippingCard> :

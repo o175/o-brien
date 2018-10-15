@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 const OuterContainer = styled.div`
+    cursor: pointer;
     perspective: 1000;
     z-index: 1;
     display: flex;
