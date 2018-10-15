@@ -15,7 +15,7 @@ const initialState = {
     7: 'James Bond',
     23: 'Michael Jordan',
   },
-  editingCard: 23
+  editingCard: null
 };
 
 const reducer = handleActions(
