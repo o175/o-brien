@@ -6,11 +6,25 @@ import { TState, TAssignments } from '../reducers';
 import { Button, Row, Input } from './ui';
 import styled from 'styled-components';
 import { closeEditor, clearCard, editCard } from '../actions';
+
+import enhanceWithClickOutside from 'react-onclickoutside';
+
 const StyledDialog = styled.dialog`
     z-index: 3000;
     position: fixed;
     top: 20%;
 `
+
+class _Container extends React.Component<{ onClickOutside: any }> {
+    handleClickOutside = () => this.props.onClickOutside();
+    render() {
+        return <div>
+            {this.props.children}
+        </div>
+    }
+}
+const Container = enhanceWithClickOutside(_Container);
+
 class Dialog extends React.Component<any, { name: string }> {
     state = { name: '' }
     componentDidMount() {
@@ -31,23 +45,28 @@ class Dialog extends React.Component<any, { name: string }> {
 
     render() {
         return <StyledDialog open id="favDialog">
-            <h3>Enter new name</h3>
-            <Input
-                innerRef={this.setTextInputRef}
-                onChange={this.onChange}
-                value={this.state.name}
-            />
-            <Row>
-                <Button onClick={this.onSave} >
-                    Save
-                </Button>
-                <Button onClick={this.props.actions.clearCard}>
-                    Remove
-                </Button>
-                <Button onClick={this.props.actions.closeEditor}>
-                    Close
-                </Button>
-            </Row>
+            <Container
+                stopPropagation={true}
+                preventDefault={true}
+                onClickOutside={this.props.actions.closeEditor}>
+                <h3>Enter new name</h3>
+                <Input
+                    innerRef={this.setTextInputRef}
+                    onChange={this.onChange}
+                    value={this.state.name}
+                />
+                <Row>
+                    <Button onClick={this.onSave} >
+                        Save
+                    </Button>
+                    <Button onClick={this.props.actions.clearCard}>
+                        Remove
+                    </Button>
+                    <Button onClick={this.props.actions.closeEditor}>
+                        Close
+                    </Button>
+                </Row>
+            </Container>
         </StyledDialog >
     }
 }

@@ -12,18 +12,23 @@ const Container = styled.div`
     grid-gap: 5px;
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
 `;
-const Grid = (something: TAssignments) => <Container>
+const Grid = (props: { assignments: TAssignments, editingCard: number }) => <Container>
     {
         _.range(0, 100)
             .map(
-                (x, i) => something[x] ?
-                    <Cell number={x}
-                        name={something[x]}></Cell> :
-                    <Cell number={x}></Cell>
+                (x) =>
+                    <Cell
+                        number={x}
+                        name={props.assignments[x]}
+                        isEditing={props.editingCard === x}
+                    />
             )
     }
 </Container>
 
 export default connect(
-    (state: TState) => state.assignments,
+    (state: TState) => ({
+        assignments: state.assignments,
+        editingCard: state.editingCard,
+    }),
 )(Grid);

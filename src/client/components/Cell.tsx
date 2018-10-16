@@ -7,6 +7,7 @@ import { startEditing } from '../actions'
 
 const CellPrimitive = styled.div`
     border: solid grey;
+    background-color: ${props => props.isEditing ? 'yellow' : 'white'};
     cursor: pointer;
 `;
 
@@ -21,25 +22,43 @@ margin-right: auto;
     transform: translateY(-50%);
 `
 
-const Cell = (props: {
+class Cell extends React.Component<{
     number: number,
     name?: string,
     actions?: any,
-}) => props.name ? <FlippingCard onClick={() => props.actions.startEditing(props.number)}>
-    <Front>
-        <CellText>
-            {props.number}
-        </CellText>
-    </Front>
-    <Back>
-        <div>{props.name}</div>
-    </Back>
-</FlippingCard> :
-        <CellPrimitive
-            onClick={() => props.actions.startEditing(props.number)}
-        >
-            <CellText>{props.number}</CellText>
-        </CellPrimitive>
+    isEditing: boolean,
+}> {
+    startEditing = () => this.props.actions.startEditing(this.props.number);
+    render() {
+        const props = this.props;
+        if (props.isEditing) {
+            return <CellPrimitive
+                isEditing={props.isEditing}
+                onClick={this.startEditing}>
+                <CellText>{props.number}</CellText>
+            </CellPrimitive>
+
+        } else {
+            return props.name ? <FlippingCard onClick={this.startEditing}>
+                <Front>
+                    <CellText>
+                        {props.number}
+                    </CellText>
+                </Front>
+                <Back>
+                    <div>{props.name}</div>
+                </Back>
+            </FlippingCard>
+                :
+                <CellPrimitive onClick={this.startEditing}>
+                    <CellText>{props.number}</CellText>
+                </CellPrimitive>
+
+        }
+
+    }
+}
+
 
 export default connect(
     () => { },
